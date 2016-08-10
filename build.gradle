@@ -1,0 +1,33 @@
+apply plugin: 'application'
+apply plugin: 'java'
+
+//jar {
+//    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+//    manifest {
+//        attributes 'Main-Class': 'com.test.HelloWorld'
+//    }
+//}
+mainClassName = 'com.test.HelloWorld'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'log4j:log4j:1.2.17'
+    testCompile 'junit:junit:4.11'
+}
+
+task copyLicense {
+    outputs.file new File("$buildDir/LICENSE")
+    doLast {
+        copy {
+            from "LICENSE"
+            into "$buildDir"
+        }
+    }
+}
+
+applicationDistribution.from(copyLicense) {
+    into ""
+}
